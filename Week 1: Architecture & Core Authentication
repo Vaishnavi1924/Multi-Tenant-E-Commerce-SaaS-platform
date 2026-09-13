@@ -1,2 +1,188 @@
 # Multi-Tenant-E-Commerce-SaaS-platform
 A comprehensive Multi-Tenant E-Commerce Platform designed to allow independent vendors to register, set up their own digital storefronts, and manage inventory within a single unified ecosystem.
+
+
+Step 1: Create the main folder
+
+Open VS Code → Terminal → New Terminal and run:
+mkdir multi-tenant-ecommerce
+cd multi-tenant-ecommerce
+
+Create the frontend:
+npm create vite@latest frontend -- --template react
+
+Choose:React
+JavaScript
+
+Then install frontend packages:
+cd frontend
+npm install
+npm install react-router-dom @reduxjs/toolkit react-redux axios
+cd ..
+
+Step 2: Create the backend
+mkdir backend
+cd backend
+npm init -y
+
+Install the backend dependencies:
+npm install express mongoose cors dotenv bcryptjs jsonwebtoken helmet
+npm install cloudinary multer nodemailer stripe
+npm install
+
+Install development dependency:
+npm install --save-dev nodemon
+
+multi-tenant-ecommerce/
+│
+├── frontend/
+│   ├── src/
+│   ├── public/
+│   ├── package.json
+│   └── vite.config.js
+│
+└── backend/
+    ├── package.json
+    └── node_modules/
+
+
+Step 3: Backend folder structure
+
+backend/
+│
+├── config/
+│   └── db.js
+│
+├── controllers/
+│
+├── middleware/
+│
+├── models/
+│
+├── routes/
+│
+├── services/
+│
+├── utils/
+│
+├── .env
+├── .gitignore
+├── server.js
+└── package.json
+
+Step 4: Create the Express server
+
+const express = require("express");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const helmet = require("helmet");
+
+dotenv.config();
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+app.use(helmet());
+
+app.get("/", (req, res) => {
+  res.json({
+    message: "Multi-Tenant E-Commerce API is running"
+  });
+});
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+Step 5: Add environment variables
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret_key
+
+Create backend/.gitignore:
+node_modules
+.env
+
+
+Step 6: Configure MongoDB
+const mongoose = require("mongoose");
+
+const connectDB = async () => {
+  try {
+    const connection = await mongoose.connect(process.env.MONGO_URI);
+
+    console.log(`MongoDB connected: ${connection.connection.host}`);
+  } catch (error) {
+    console.error(`MongoDB connection error: ${error.message}`);
+    process.exit(1);
+  }
+};
+
+const express = require("express");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const helmet = require("helmet");
+const connectDB = require("./config/db");
+
+dotenv.config();
+
+connectDB();
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+app.use(helmet());
+
+app.get("/", (req, res) => {
+  res.json({
+    message: "Multi-Tenant E-Commerce API is running"
+  });
+});
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+
+
+
+Step 7: Configure Nodemon
+"scripts": {
+  "start": "node server.js",
+  "dev": "nodemon server.js"
+}
+npm run dev
+
+
+                 E-COMMERCE PLATFORM
+                         │
+          ┌──────────────┼──────────────┐
+          │              │              │
+     SUPER ADMIN       VENDOR        CUSTOMER
+          │              │              │
+          │              │              │
+      Manage all     Manage store    Browse products
+      vendors        Add products    Add to cart
+      stores         Manage stock    Checkout
+      analytics      View orders     View orders
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
